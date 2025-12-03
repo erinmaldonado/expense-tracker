@@ -59,10 +59,9 @@ function App() {
 
   useEffect(() => {
     if (isAuthenticated && token) {
-      // INCLUDE AUTHORIZATION HEADER WITH THE JWT
       fetch('http://localhost:5155/api/expenses', {
         headers: {
-          'Authorization': `Bearer ${token}` // Send the token here!
+          'Authorization': `Bearer ${token}`
         }
       })
       .then(response => {
@@ -93,7 +92,7 @@ function App() {
 
         <div className="card-body">
           {isAuthenticated ? (
-             // Table Display Code (No changes needed here, as it uses the 'expenses' state)
+             // Table Display Code
              <table className="table table-striped table-hover">
                 <thead className="table-dark">
                   {/* ... headers ... */}
