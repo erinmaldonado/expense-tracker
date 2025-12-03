@@ -6,12 +6,23 @@ using Microsoft.OpenApi;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Database
-builder.Services.AddDbContext<FinanceDbContext>(options =>
-{
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    options.UseSqlite(connectionString);
-});
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+if (builder.Environment.IsProduction())
+{
+    // Use PostgreSQL in the cloud environment
+    connectionString = builder.Configuration.GetConnectionString("ProductionConnection");
+    builder.Services.AddDbContext<FinanceDbContext>(options =>
+        options.UseNpgsql(connectionString)
+    );
+}
+else
+{
+    // Use SQLite for local development
+    builder.Services.AddDbContext<FinanceDbContext>(options =>
+        options.UseSqlite(connectionString)
+    );
+}
 // --- IDENTITY CONFIGURATION ---
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<FinanceDbContext>()

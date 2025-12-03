@@ -59,7 +59,7 @@ function App() {
 
   useEffect(() => {
     if (isAuthenticated && token) {
-      fetch('http://localhost:5155/api/expenses', {
+      fetch(`${import.meta.env.VITE_API_BASE_URL}/api/expenses`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
